@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View_Controller.ModifyProduct">
+   <children>
+      <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1160.0">
+         <children>
+            <AnchorPane layoutX="20.0" layoutY="20.0" prefHeight="544.0" prefWidth="600.0">
+               <children>
+                  <Label layoutX="32.0" layoutY="32.0" prefHeight="17.0" prefWidth="103.0" text="Modify Product" />
+                  <RadioButton fx:id="inHouseButton" layoutX="213.0" layoutY="32.0" mnemonicParsing="false" onAction="#inHouseTrue" text="In-House" />
+                  <RadioButton fx:id="Outsourced" layoutX="326.0" layoutY="32.0" mnemonicParsing="false" onAction="#outsourcedTrue" text="Outsourced" />
+                  <Label layoutX="88.0" layoutY="119.0" text="ID" />
+                  <TextField fx:id="partIDBox" layoutX="124.0" layoutY="104.0" onAction="#idHandler" prefHeight="47.0" prefWidth="192.0" promptText="Auto Gen - Disabled" />
+                  <Label layoutX="71.0" layoutY="179.0" text="Name" />
+                  <TextField fx:id="Name" layoutX="124.0" layoutY="164.0" onAction="#nameHandler" prefHeight="47.0" prefWidth="192.0" promptText="Part Name" />
+                  <Label layoutX="84.0" layoutY="236.0" text="Inv" />
+                  <TextField fx:id="Inv" layoutX="124.0" layoutY="221.0" onAction="#invHandler" prefHeight="47.0" prefWidth="192.0" promptText="Inv" />
+                  <Label layoutX="48.0" layoutY="293.0" prefHeight="17.0" prefWidth="55.0" text="Price/Cost" />
+                  <TextField fx:id="PriceCost" layoutX="124.0" layoutY="278.0" onAction="#priceCostHandler" prefHeight="47.0" prefWidth="192.0" promptText="Price/Cost" />
+                  <Label layoutX="81.0" layoutY="358.0" text="Max" />
+                  <TextField fx:id="Max" layoutX="124.0" layoutY="343.0" onAction="#maxHandler" prefHeight="47.0" prefWidth="192.0" promptText="Max" />
+                  <Label layoutX="337.0" layoutY="358.0" text="Min" />
+                  <TextField fx:id="Min" layoutX="390.0" layoutY="343.0" onAction="#minHandler" prefHeight="47.0" prefWidth="192.0" promptText="Min" />
+                  <Label layoutX="18.0" layoutY="420.0" text="Company Name" />
+                  <TextField fx:id="CompName" layoutX="124.0" layoutY="405.0" onAction="#companyNameHandler" prefHeight="47.0" prefWidth="192.0" promptText="Comp Name" />
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="620.0" layoutY="50.0" prefHeight="232.0" prefWidth="527.0" style="-fx-border-color: gray; -fx-border-radius: 10;">
+               <children>
+                  <Button fx:id="Search" layoutX="281.0" layoutY="14.0" mnemonicParsing="false" onAction="#searchHandler" text="Search" />
+                  <TextField layoutX="355.0" layoutY="14.0" />
+                  <TableView layoutX="25.0" layoutY="52.0" prefHeight="127.0" prefWidth="479.0">
+                     <columns>
+                        <TableColumn prefWidth="130.0" text="Part ID" />
+                        <TableColumn prefWidth="111.0" text="Part Name" />
+                        <TableColumn prefWidth="119.0" text="Inventory Level" />
+                        <TableColumn prefWidth="118.0" text="Price Per Unit" />
+                     </columns>
+                  </TableView>
+                  <Button fx:id="Add1" layoutX="466.0" layoutY="193.0" mnemonicParsing="false" onAction="#addHandler1" text="Add" />
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="620.0" layoutY="300.0" prefHeight="232.0" prefWidth="527.0" style="-fx-border-color: gray; -fx-border-radius: 10;">
+               <children>
+                  <Button layoutX="281.0" layoutY="14.0" mnemonicParsing="false" onAction="#searchHandler1" text="Search" />
+                  <TextField layoutX="355.0" layoutY="14.0" />
+                  <TableView layoutX="25.0" layoutY="52.0" prefHeight="127.0" prefWidth="479.0">
+                     <columns>
+                        <TableColumn prefWidth="130.0" text="Part ID" />
+                        <TableColumn prefWidth="111.0" text="Part Name" />
+                        <TableColumn prefWidth="119.0" text="Inventory Level" />
+                        <TableColumn prefWidth="118.0" text="Price Per Unit" />
+                     </columns>
+                  </TableView>
+                  <Button fx:id="Add2" layoutX="466.0" layoutY="193.0" mnemonicParsing="false" onAction="#addHandler2" text="Add" />
+               </children>
+            </AnchorPane>
+            <Button fx:id="CancelButton" layoutX="1094.0" layoutY="618.0" mnemonicParsing="false" onAction="#cancelButtonHandler" text="Cancel" />
+            <Button fx:id="SaveButton" layoutX="1045.0" layoutY="618.0" mnemonicParsing="false" onAction="#saveButtonHandler" text="Save" />
+            <Button fx:id="Delete" layoutX="1094.0" layoutY="564.0" mnemonicParsing="false" onAction="#deleteHandler" text="Delete" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
