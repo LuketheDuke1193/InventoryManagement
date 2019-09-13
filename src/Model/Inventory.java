@@ -7,6 +7,11 @@ public class Inventory {
     private ArrayList<Part> allParts;
     private ArrayList<Product> allProducts;
 
+    public Inventory(ArrayList<Part> allParts, ArrayList<Product> allProducts) {
+        this.allParts = allParts;
+        this.allProducts = allProducts;
+    }
+
     public void addPart(Part newPart){
 
     }
