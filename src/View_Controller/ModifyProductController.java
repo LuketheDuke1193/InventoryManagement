@@ -1,12 +1,17 @@
 package View_Controller;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+import Model.Inventory;
+import Model.Part;
+import Model.Product;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
+
+import java.net.URL;
+import java.util.ResourceBundle;
 
 public class ModifyProductController {
 
@@ -16,14 +21,7 @@ public class ModifyProductController {
     @FXML
     private URL location;
 
-    @FXML
-    private RadioButton inHouseButton;
-
-    @FXML
-    private RadioButton Outsourced;
-
-    @FXML
-    private TextField partIDBox;
+    public ObservableList<Part> searchPartsInv = FXCollections.observableArrayList();
 
     @FXML
     private TextField Name;
@@ -41,16 +39,13 @@ public class ModifyProductController {
     private TextField Min;
 
     @FXML
-    private TextField CompName;
-
-    @FXML
     private Button Search;
-
+    public ObservableList<Part> partInv = FXCollections.observableArrayList();
+    public ObservableList<Part> associatedPartInv = FXCollections.observableArrayList();
     @FXML
-    private Button Add1;
-
+    private TextField ID;
     @FXML
-    private Button Add2;
+    private TextField SearchField;
 
     @FXML
     private Button CancelButton;
@@ -60,39 +55,16 @@ public class ModifyProductController {
 
     @FXML
     private Button Delete;
-
     @FXML
-    void addHandler1(ActionEvent event) {
-
-    }
-
+    private TableView<Part> partsInvTable;
     @FXML
-    void addHandler2(ActionEvent event) {
-
-    }
-
+    private Button Add;
     @FXML
-    void cancelButtonHandler(ActionEvent event) {
-
-    }
-
-    @FXML
-    void companyNameHandler(ActionEvent event) {
-
-    }
-
-    @FXML
-    void deleteHandler(ActionEvent event) {
-
-    }
+    private TableView<Part> associatedPartsTable;
+    private Product product;
 
     @FXML
     void idHandler(ActionEvent event) {
-
-    }
-
-    @FXML
-    void inHouseTrue(ActionEvent event) {
 
     }
 
@@ -106,6 +78,7 @@ public class ModifyProductController {
 
     }
 
+
     @FXML
     void minHandler(ActionEvent event) {
 
@@ -117,47 +90,119 @@ public class ModifyProductController {
     }
 
     @FXML
-    void outsourcedTrue(ActionEvent event) {
-
-    }
-
-    @FXML
     void priceCostHandler(ActionEvent event) {
 
     }
 
     @FXML
-    void saveButtonHandler(ActionEvent event) {
+    void addHandler1(ActionEvent event) {
+        Part selPart = partsInvTable.getSelectionModel().getSelectedItem();
+        product.addAssociatedPart(selPart);
+        generateAssociatedPartsTable();
+    }
 
+    @FXML
+    void cancelButtonHandler(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to exit the Modify Product window?", ButtonType.YES, ButtonType.NO);
+        alert.showAndWait();
+
+        if (alert.getResult() == ButtonType.YES) {
+            Stage stage = (Stage) CancelButton.getScene().getWindow();
+            stage.close();
+        }
+    }
+
+    @FXML
+    void deleteHandler(ActionEvent event) {
+        Part delPart = partsInvTable.getSelectionModel().getSelectedItem();
+        product.deleteAssociatedPart(delPart);
+        generateAssociatedPartsTable();
+    }
+
+    @FXML
+    void saveButtonHandler(ActionEvent event) {
+        Product newProduct = new Product(
+                Integer.parseInt(ID.getText()),
+                Name.getText(),
+                Double.parseDouble(PriceCost.getText()),
+                Integer.parseInt(Inv.getText()),
+                Integer.parseInt(Min.getText()),
+                Integer.parseInt(Max.getText())
+        );
+
+        int idPosition = Integer.parseInt(ID.getText());
+        idPosition--;
+
+        if (Integer.parseInt(Min.getText()) > Integer.parseInt(Max.getText())) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Min Field Error");
+            alert.setContentText("Error: Please ensure that the value in the Min field is equal to or lower than the value in the Max field.");
+            alert.show();
+        } else {
+            Inventory.updateProduct(idPosition, newProduct);
+            //closes Modify Product Window
+            Stage stage = (Stage) SaveButton.getScene().getWindow();
+            stage.close();
+        }
     }
 
     @FXML
     void searchHandler(ActionEvent event) {
+        searchPartsInv = Inventory.lookupPart(SearchField.getText());
+        partsInvTable.setItems(searchPartsInv);
+        partsInvTable.refresh();
 
     }
 
-    @FXML
-    void searchHandler1(ActionEvent event) {
+    void setProduct(Product product) {
+        this.product = product;
+
+
+        ID.setText(String.valueOf(this.product.getId()));
+        Name.setText(this.product.getName());
+        Inv.setText(String.valueOf(this.product.getStock()));
+        PriceCost.setText(String.valueOf(this.product.getPrice()));
+        Min.setText(String.valueOf(this.product.getMin()));
+        Max.setText(String.valueOf(this.product.getMax()));
+
+        generateAssociatedPartsTable();
+        generatePartsTable();
+
+    }
+
+    public void generatePartsTable() {
+        //Takes inventory data and adds it to new Observable list "partInv"
+        partInv.setAll(Inventory.getAllParts());
+        //Sets items in partsTable tableview to the inventory list partInv
+        partsInvTable.setItems(partInv);
+        //Refreshes tableview.
+        partsInvTable.refresh();
+    }
+
+    public void generateAssociatedPartsTable() {
+        associatedPartInv.setAll(this.product.getAllAssociatedParts());
+
+        associatedPartsTable.setItems(associatedPartInv);
+        associatedPartsTable.refresh();
 
     }
 
     @FXML
     void initialize() {
-        assert inHouseButton != null : "fx:id=\"inHouseButton\" was not injected: check your FXML file 'ModifyProduct.fxml'.";
-        assert Outsourced != null : "fx:id=\"Outsourced\" was not injected: check your FXML file 'ModifyProduct.fxml'.";
-        assert partIDBox != null : "fx:id=\"partIDBox\" was not injected: check your FXML file 'ModifyProduct.fxml'.";
+        assert ID != null : "fx:id=\"ID\" was not injected: check your FXML file 'ModifyProduct.fxml'.";
         assert Name != null : "fx:id=\"Name\" was not injected: check your FXML file 'ModifyProduct.fxml'.";
         assert Inv != null : "fx:id=\"Inv\" was not injected: check your FXML file 'ModifyProduct.fxml'.";
         assert PriceCost != null : "fx:id=\"PriceCost\" was not injected: check your FXML file 'ModifyProduct.fxml'.";
         assert Max != null : "fx:id=\"Max\" was not injected: check your FXML file 'ModifyProduct.fxml'.";
         assert Min != null : "fx:id=\"Min\" was not injected: check your FXML file 'ModifyProduct.fxml'.";
-        assert CompName != null : "fx:id=\"CompName\" was not injected: check your FXML file 'ModifyProduct.fxml'.";
         assert Search != null : "fx:id=\"Search\" was not injected: check your FXML file 'ModifyProduct.fxml'.";
-        assert Add1 != null : "fx:id=\"Add1\" was not injected: check your FXML file 'ModifyProduct.fxml'.";
-        assert Add2 != null : "fx:id=\"Add2\" was not injected: check your FXML file 'ModifyProduct.fxml'.";
+        assert partsInvTable != null : "fx:id=\"partsInvTable\" was not injected: check your FXML file 'ModifyProduct.fxml'.";
+        assert Add != null : "fx:id=\"Add\" was not injected: check your FXML file 'ModifyProduct.fxml'.";
+        assert associatedPartsTable != null : "fx:id=\"associatedPartsTable\" was not injected: check your FXML file 'ModifyProduct.fxml'.";
         assert CancelButton != null : "fx:id=\"CancelButton\" was not injected: check your FXML file 'ModifyProduct.fxml'.";
         assert SaveButton != null : "fx:id=\"SaveButton\" was not injected: check your FXML file 'ModifyProduct.fxml'.";
         assert Delete != null : "fx:id=\"Delete\" was not injected: check your FXML file 'ModifyProduct.fxml'.";
+        ID.disableProperty().setValue(true);
 
     }
 }
