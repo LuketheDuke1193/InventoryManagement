@@ -159,7 +159,7 @@ public class MainScreenController implements Initializable {
             ModifyProductController controller = loader.getController();
             controller.setProduct(product);
             stage.showAndWait(); //Tells main screen runtime to pause and wait for the new window to close before proceeding.
-            generatePartsTable();
+            generateProductsTable();
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("No parts selected!");

@@ -99,6 +99,22 @@ public class AddProductController {
             alert.setTitle("Min Field Error");
             alert.setContentText("Error: Please ensure that the value in the Min field is equal to or lower than the value in the Max field.");
             alert.show();
+        } else if (Integer.parseInt(Inv.getText()) > Integer.parseInt(Max.getText()) || Integer.parseInt(Inv.getText()) < Integer.parseInt(Min.getText())) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Inv Level Error");
+            alert.setContentText("Error: Please ensure that the value in the Inv field is equal to or between the values in the Max and Min fields.");
+            alert.show();
+        } else if (Double.parseDouble(PriceCost.getText()) < 0) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Price Error");
+            alert.setContentText("Error: Prices of parts and products cannot be negative.");
+            alert.show();
+
+        } else if (associatedPartInv.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Associated Parts Error");
+            alert.setContentText("Error: Products must have at least one associated part.");
+            alert.show();
         } else {
             Inventory.addProduct(newProduct);
             Stage stage = (Stage) SaveButton.getScene().getWindow();

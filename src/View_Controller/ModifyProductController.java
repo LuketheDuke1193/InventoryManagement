@@ -54,8 +54,16 @@ public class ModifyProductController {
     @FXML
     void addHandler1(ActionEvent event) {
         Part selPart = partsInvTable.getSelectionModel().getSelectedItem();
-        product.addAssociatedPart(selPart);
-        generateAssociatedPartsTable();
+
+        if (associatedPartsTable.getItems().contains(selPart)) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Associated Part Error");
+            alert.setContentText("Parts cannot be associated twice for the same product.");
+            alert.show();
+        } else {
+            this.product.addAssociatedPart(selPart);
+            generateAssociatedPartsTable();
+        }
     }
 
     @FXML
@@ -79,14 +87,12 @@ public class ModifyProductController {
 
     @FXML
     void saveButtonHandler(ActionEvent event) {
-        Product newProduct = new Product(
-                Integer.parseInt(ID.getText()),
-                Name.getText(),
-                Double.parseDouble(PriceCost.getText()),
-                Integer.parseInt(Inv.getText()),
-                Integer.parseInt(Min.getText()),
-                Integer.parseInt(Max.getText())
-        );
+        this.product.setId(Integer.parseInt(ID.getText()));
+        this.product.setName(Name.getText());
+        this.product.setPrice(Double.parseDouble(PriceCost.getText()));
+        this.product.setStock(Integer.parseInt(Inv.getText()));
+        this.product.setMin(Integer.parseInt(Min.getText()));
+        this.product.setMax(Integer.parseInt(Max.getText()));
 
         int idPosition = Integer.parseInt(ID.getText());
         idPosition--;
@@ -96,8 +102,23 @@ public class ModifyProductController {
             alert.setTitle("Min Field Error");
             alert.setContentText("Error: Please ensure that the value in the Min field is equal to or lower than the value in the Max field.");
             alert.show();
+        } else if (Integer.parseInt(Inv.getText()) > Integer.parseInt(Max.getText()) || Integer.parseInt(Inv.getText()) < Integer.parseInt(Min.getText())) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Inv Level Error");
+            alert.setContentText("Error: Please ensure that the value in the Inv field is equal to or between the values in the Max and Min fields.");
+            alert.show();
+        } else if (Double.parseDouble(PriceCost.getText()) < 0) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Price Error");
+            alert.setContentText("Error: Prices of parts and products cannot be negative.");
+            alert.show();
+        } else if (associatedPartInv.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Associated Parts Error");
+            alert.setContentText("Error: Products must have at least one associated part.");
+            alert.show();
         } else {
-            Inventory.updateProduct(idPosition, newProduct);
+            Inventory.updateProduct(idPosition, this.product);
             //closes Modify Product Window
             Stage stage = (Stage) SaveButton.getScene().getWindow();
             stage.close();

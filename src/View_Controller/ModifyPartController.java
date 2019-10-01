@@ -85,7 +85,24 @@ public class ModifyPartController {
                 alert.setTitle("Min Field Error");
                 alert.setContentText("Error: Please ensure that the value in the Min field is equal to or lower than the value in the Max field.");
                 alert.show();
+            } else if (Integer.parseInt(Inv.getText()) > Integer.parseInt(Max.getText()) || Integer.parseInt(Inv.getText()) < Integer.parseInt(Min.getText())) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Inv Level Error");
+                alert.setContentText("Error: Please ensure that the value in the Inv field is equal to or between the values in the Max and Min fields.");
+                alert.show();
+            } else if (Double.parseDouble(PriceCost.getText()) < 0) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Price Error");
+                alert.setContentText("Error: Prices of parts and products cannot be negative.");
+                alert.show();
             } else {
+                for (int i = 0; i < Inventory.getAllProducts().size(); i++) { //Iterates through products inv
+                    for (int j = 0; j < Inventory.getAllProducts().get(i).getAllAssociatedParts().size(); j++) {//Iterates through
+                        if (Inventory.getAllProducts().get(i).getAllAssociatedParts().get(j).getId() == newPart.getId()) {
+                            Inventory.getAllProducts().get(i).getAllAssociatedParts().set(j, newPart);
+                        }
+                    }
+                }
                 updatePart(idPosition, newPart);
                 //closes Modify Part Window
                 Stage stage = (Stage) SaveButton.getScene().getWindow();
@@ -109,7 +126,24 @@ public class ModifyPartController {
                 alert.setTitle("Min Field Error");
                 alert.setContentText("Error: Please ensure that the value in the Min field is equal to or lower than the value in the Max field.");
                 alert.show();
+            } else if (Integer.parseInt(Inv.getText()) > Integer.parseInt(Max.getText()) || Integer.parseInt(Inv.getText()) < Integer.parseInt(Min.getText())) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Inv Level Error");
+                alert.setContentText("Error: Please ensure that the value in the Inv field is equal to or between the values in the Max and Min fields.");
+                alert.show();
+            } else if (Double.parseDouble(PriceCost.getText()) < 0) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Price Error");
+                alert.setContentText("Error: Prices of parts and products cannot be negative.");
+                alert.show();
             } else {
+                for (int i = 0; i < Inventory.getAllProducts().size(); i++) { //Iterates through products inv
+                    for (int j = 0; j < Inventory.getAllProducts().get(i).getAllAssociatedParts().size(); j++) {//Iterates through
+                        if (Inventory.getAllProducts().get(i).getAllAssociatedParts().get(j).getId() == newPart.getId()) {
+                            Inventory.getAllProducts().get(i).getAllAssociatedParts().set(j, newPart);
+                        }
+                    }
+                }
                 updatePart(idPosition, newPart);
                 //closes Modify Part Window
                 Stage stage = (Stage) SaveButton.getScene().getWindow();
