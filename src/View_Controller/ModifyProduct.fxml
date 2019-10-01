@@ -12,18 +12,23 @@
                <children>
                   <Label layoutX="32.0" layoutY="32.0" prefHeight="17.0" prefWidth="103.0" text="Modify Product" />
                   <Label layoutX="88.0" layoutY="119.0" text="ID" />
-                   <TextField fx:id="ID" layoutX="124.0" layoutY="104.0" onAction="#idHandler" prefHeight="47.0"
-                              prefWidth="192.0" promptText="Auto Gen - Disabled"/>
+                   <TextField fx:id="ID" layoutX="124.0" layoutY="104.0" prefHeight="47.0" prefWidth="192.0"
+                              promptText="Auto Gen - Disabled"/>
                   <Label layoutX="71.0" layoutY="179.0" text="Name" />
-                  <TextField fx:id="Name" layoutX="124.0" layoutY="164.0" onAction="#nameHandler" prefHeight="47.0" prefWidth="192.0" promptText="Part Name" />
+                   <TextField fx:id="Name" layoutX="124.0" layoutY="164.0" prefHeight="47.0" prefWidth="192.0"
+                              promptText="Part Name"/>
                   <Label layoutX="84.0" layoutY="236.0" text="Inv" />
-                  <TextField fx:id="Inv" layoutX="124.0" layoutY="221.0" onAction="#invHandler" prefHeight="47.0" prefWidth="192.0" promptText="Inv" />
+                   <TextField fx:id="Inv" layoutX="124.0" layoutY="221.0" prefHeight="47.0" prefWidth="192.0"
+                              promptText="Inv"/>
                   <Label layoutX="48.0" layoutY="293.0" prefHeight="17.0" prefWidth="55.0" text="Price/Cost" />
-                  <TextField fx:id="PriceCost" layoutX="124.0" layoutY="278.0" onAction="#priceCostHandler" prefHeight="47.0" prefWidth="192.0" promptText="Price/Cost" />
+                   <TextField fx:id="PriceCost" layoutX="124.0" layoutY="278.0" prefHeight="47.0" prefWidth="192.0"
+                              promptText="Price/Cost"/>
                   <Label layoutX="81.0" layoutY="358.0" text="Max" />
-                  <TextField fx:id="Max" layoutX="124.0" layoutY="343.0" onAction="#maxHandler" prefHeight="47.0" prefWidth="192.0" promptText="Max" />
+                   <TextField fx:id="Max" layoutX="124.0" layoutY="343.0" prefHeight="47.0" prefWidth="192.0"
+                              promptText="Max"/>
                   <Label layoutX="337.0" layoutY="358.0" text="Min" />
-                  <TextField fx:id="Min" layoutX="390.0" layoutY="343.0" onAction="#minHandler" prefHeight="47.0" prefWidth="192.0" promptText="Min" />
+                   <TextField fx:id="Min" layoutX="390.0" layoutY="343.0" prefHeight="47.0" prefWidth="192.0"
+                              promptText="Min"/>
                </children>
             </AnchorPane>
             <AnchorPane layoutX="620.0" layoutY="50.0" prefHeight="232.0" prefWidth="527.0" style="-fx-border-color: gray; -fx-border-radius: 10;">

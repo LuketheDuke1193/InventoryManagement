@@ -15,14 +15,9 @@ public class InventoryProgram extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        //Creates new Inventory object.
-        Inventory inventory = new Inventory();
-        //Calls the method to add sample data to the inventory object.
-        addTestData(inventory);
-
-
-        //Starts loading MainScreen resources.
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View_Controller/MainScreen.fxml"));
+        Inventory inventory = new Inventory(); //Creates new Inventory object.
+        addTestData(inventory); //Calls the method to add sample data to the inventory object.
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View_Controller/MainScreen.fxml"));//Starts loading MainScreen resources.
         View_Controller.MainScreenController controller = new View_Controller.MainScreenController(inventory); //Passes inventory to controller.
         //loader.setController(controller);
         Parent root = loader.load();
@@ -34,14 +29,14 @@ public class InventoryProgram extends Application {
 
     void addTestData(Inventory inventory) {
         //Makes inhouse parts
-        Part ih1 = new InhousePart(1, "Part 54", 4.55, 8, 4, 12, 100);
-        Part ih2 = new InhousePart(2, "Part 22", 3.50, 2, 1, 5, 101);
+        Part ih1 = new InhousePart(1, "Part Test", 4.55, 8, 4, 12, 100);
+        Part ih2 = new InhousePart(2, "Part Ball", 3.50, 2, 1, 5, 101);
         //adds IH parts to inventory.
         Inventory.addPart(ih1);
         Inventory.addPart(ih2);
         //Makes outsourced parts
-        Part os1 = new OutsourcedPart(3, "Part 77", 5.22, 9, 4, 13, "Cantara Industries");
-        Part os2 = new OutsourcedPart(4, "Part 2B", 3.40, 4, 2, 12, "Relton Inc.");
+        Part os1 = new OutsourcedPart(3, "Part Wrench", 5.22, 9, 4, 13, "Cantara Industries");
+        Part os2 = new OutsourcedPart(4, "Part Screw", 3.23, 4, 2, 12, "Relton Inc.");
         //Adds OS parts to inventory
         Inventory.addPart(os1);
         Inventory.addPart(os2);

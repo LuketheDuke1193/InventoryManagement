@@ -6,13 +6,15 @@ import Model.Product;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
@@ -21,20 +23,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MainScreenController implements Initializable {
-
-    public ObservableList<Part> partInv = FXCollections.observableArrayList();
-    @FXML
-    private ResourceBundle resources;
-    @FXML
-    private URL location;
-    public ObservableList<Product> prodInv = FXCollections.observableArrayList();
-    public ObservableList<Part> searchPartsInv = FXCollections.observableArrayList();
-    @FXML
-    private Button Search;
-    @FXML
-    private Button Search1;
     public ObservableList<Product> searchProductsInv = FXCollections.observableArrayList();
     Inventory inventory;
+    public ObservableList<Part> partInv = FXCollections.observableArrayList();
+    public ObservableList<Product> prodInv = FXCollections.observableArrayList();
+    public ObservableList<Part> searchPartsInv = FXCollections.observableArrayList();
+
     @FXML
     private TableView<Part> partsTable;
     @FXML
@@ -48,7 +42,7 @@ public class MainScreenController implements Initializable {
         this.inventory = inventory;
     }
 
-    public MainScreenController() {
+    public MainScreenController() { //Line 23 of InventoryProgram class throws error if default constructor isn't present.
 
     }
 
@@ -56,8 +50,6 @@ public class MainScreenController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         generatePartsTable();
         generateProductsTable();
-
-
     }
 
     public void generatePartsTable() {
@@ -69,83 +61,65 @@ public class MainScreenController implements Initializable {
         partsTable.refresh();
     }
 
-    public void generateProductsTable() {
+    public void generateProductsTable() { //Same functionality as generatePartsTable() but for products.
         prodInv.setAll(Inventory.getAllProducts());
-
         productTable.setItems(prodInv);
         productTable.refresh();
-
     }
 
     @FXML
-    void addHandler(MouseEvent event) throws IOException {
-
+    void addHandler(MouseEvent event) throws IOException { //Opens Add Part screen
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View_Controller/AddPart.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
         Stage stage = new Stage();
         stage.setScene(scene);
         stage.setResizable(false);
-
-
-        AddPartController controller = loader.getController();
         stage.showAndWait(); //Tells main screen runtime to pause and wait for the new window to close before proceeding.
         generatePartsTable();
     }
 
     @FXML
-    void addHandler1(MouseEvent event) throws IOException {
+    void addHandler1(MouseEvent event) throws IOException { //Opens Add Product Screen
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View_Controller/AddProduct.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
         Stage stage = new Stage();
         stage.setScene(scene);
         stage.setResizable(false);
-
-
-        AddProductController controller = loader.getController();
         stage.showAndWait(); //Tells main screen runtime to pause and wait for the new window to close before proceeding.
         generateProductsTable();
     }
 
     @FXML
-    void deleteHandler(MouseEvent event) {
-
+    void deleteHandler(MouseEvent event) { //Deletes selected part
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete " + partsTable.getSelectionModel().getSelectedItem().getName() + "?", ButtonType.YES, ButtonType.NO);
         alert.showAndWait();
-
         if (alert.getResult() == ButtonType.YES) {
             Part part = partsTable.getSelectionModel().getSelectedItem();
             Inventory.deletePart(part);
             generatePartsTable();
         }
-
-
     }
 
     @FXML
-    void deleteHandler1(MouseEvent event) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete " + partsTable.getSelectionModel().getSelectedItem().getName() + "?", ButtonType.YES, ButtonType.NO);
+    void deleteHandler1(MouseEvent event) { //Deletes selected product
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete " + productTable.getSelectionModel().getSelectedItem().getName() + "?", ButtonType.YES, ButtonType.NO);
         alert.showAndWait();
-
         if (alert.getResult() == ButtonType.YES) {
             Product product = productTable.getSelectionModel().getSelectedItem();
             Inventory.deleteProduct(product);
             generateProductsTable();
         }
-
     }
 
     @FXML
-    void exitHandler(MouseEvent event) {
-
+    void exitHandler(MouseEvent event) { //Exit Button Handler
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to exit?", ButtonType.YES, ButtonType.NO);
         alert.showAndWait();
-
         if (alert.getResult() == ButtonType.YES) {
             Platform.exit();
         }
-
     }
 
     @FXML
@@ -159,8 +133,6 @@ public class MainScreenController implements Initializable {
             Stage stage = new Stage();
             stage.setScene(scene);
             stage.setResizable(false);
-
-
             ModifyPartController controller = loader.getController();
             controller.setPart(part);
             stage.showAndWait(); //Tells main screen runtime to pause and wait for the new window to close before proceeding.
@@ -171,7 +143,6 @@ public class MainScreenController implements Initializable {
             alert.setContentText("Please select a part to modify.");
             alert.showAndWait();
         }
-
     }
 
     @FXML
@@ -185,8 +156,6 @@ public class MainScreenController implements Initializable {
             Stage stage = new Stage();
             stage.setScene(scene);
             stage.setResizable(false);
-
-
             ModifyProductController controller = loader.getController();
             controller.setProduct(product);
             stage.showAndWait(); //Tells main screen runtime to pause and wait for the new window to close before proceeding.
@@ -200,7 +169,7 @@ public class MainScreenController implements Initializable {
     }
 
     @FXML
-    void searchHandler(MouseEvent event) {
+    void searchHandler(MouseEvent event) { //Search handler for searching parts.
         if (partsSearchField.getText().trim().toLowerCase().isEmpty()) {
             generatePartsTable();
         } else {
@@ -221,7 +190,7 @@ public class MainScreenController implements Initializable {
     }
 
     @FXML
-    void searchHandler1(MouseEvent event) {
+    void searchHandler1(MouseEvent event) { //Search handler for searching products
         if (productsSearchField.getText().trim().toLowerCase().isEmpty()) {
             generateProductsTable();
         } else {
@@ -240,16 +209,4 @@ public class MainScreenController implements Initializable {
             }
         }
     }
-
-    @FXML
-    void textSearchHandler(ActionEvent event) {
-
-    }
-
-    @FXML
-    void textSearchHandler1(ActionEvent event) {
-
-    }
-
-
 }

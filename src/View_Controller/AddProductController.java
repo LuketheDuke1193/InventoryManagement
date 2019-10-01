@@ -14,52 +14,40 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class AddProductController {
-
-    @FXML
-    private ResourceBundle resources;
-
-    @FXML
-    private URL location;
-
+    public ObservableList<Part> searchPartsInv = FXCollections.observableArrayList();
+    public ObservableList<Part> associatedPartInv = FXCollections.observableArrayList();
     public ObservableList<Part> partInv = FXCollections.observableArrayList();
 
     @FXML
+    private ResourceBundle resources;
+    @FXML
+    private URL location;
+    @FXML
     private TextField Name;
-
     @FXML
     private TextField Inv;
-
     @FXML
     private TextField PriceCost;
-
     @FXML
     private TextField Max;
-
     @FXML
     private TextField Min;
-    public ObservableList<Part> associatedPartInv = FXCollections.observableArrayList();
-    Product product;
     @FXML
     private TextField ID;
-
     @FXML
     private Button Add1;
     @FXML
     private Button Search;
     @FXML
-    private TextField searchField;
+    private TextField SearchField;
     @FXML
     private TableView<Part> partsInvTable;
-
     @FXML
     private Button Add2;
-
     @FXML
     private Button CancelButton;
-
     @FXML
     private Button SaveButton;
-
     @FXML
     private Button Delete;
     @FXML
@@ -77,54 +65,13 @@ public class AddProductController {
     }
 
     @FXML
-    void idHandler(ActionEvent event) {
-
-    }
-
-    @FXML
-    void invHandler(ActionEvent event) {
-
-    }
-
-    @FXML
-    void maxHandler(ActionEvent event) {
-
-    }
-
-    @FXML
-    void minHandler(ActionEvent event) {
-
-    }
-
-    @FXML
-    void nameHandler(ActionEvent event) {
-
-    }
-
-    @FXML
-    void priceCostHandler(ActionEvent event) {
-
-    }
-
-    @FXML
     void cancelButtonHandler(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to exit the Add Product window?", ButtonType.YES, ButtonType.NO);
         alert.showAndWait();
-
         if (alert.getResult() == ButtonType.YES) {
             Stage stage = (Stage) CancelButton.getScene().getWindow();
             stage.close();
         }
-    }
-
-    @FXML
-    void searchHandler(ActionEvent event) {
-
-    }
-
-    @FXML
-    void searchHandler1(ActionEvent event) {
-
     }
 
     @FXML
@@ -147,7 +94,6 @@ public class AddProductController {
         for (int i = 0; i < associatedPartInv.size(); i++) {
             newProduct.addAssociatedPart(associatedPartInv.get(i));
         }
-
         if (Integer.parseInt(Min.getText()) > Integer.parseInt(Max.getText())) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Min Field Error");
@@ -158,7 +104,27 @@ public class AddProductController {
             Stage stage = (Stage) SaveButton.getScene().getWindow();
             stage.close();
         }
+    }
 
+    @FXML
+    void searchHandler(ActionEvent event) {
+        if (SearchField.getText().trim().toLowerCase().isEmpty()) {
+            generatePartsTable();
+        } else {
+            try {
+                searchPartsInv.clear();
+                searchPartsInv.add(Inventory.lookupPart(Integer.parseInt(SearchField.getText().trim().toLowerCase())));
+                partsInvTable.getItems().clear();
+                partsInvTable.setItems(searchPartsInv);
+                partsInvTable.refresh();
+            } catch (NumberFormatException badInput) {
+                searchPartsInv.clear();
+                searchPartsInv.addAll(Inventory.lookupPart(SearchField.getText().trim().toLowerCase()));
+                partsInvTable.getItems().clear();
+                partsInvTable.setItems(searchPartsInv);
+                partsInvTable.refresh();
+            }
+        }
     }
 
     public void generatePartsTable() {
@@ -173,28 +139,10 @@ public class AddProductController {
     public void generateAssociatedPartsTable() {
         associatedPartsInvTable.setItems(associatedPartInv);
         associatedPartsInvTable.refresh();
-
     }
 
     @FXML
     void initialize() {
-        assert ID != null : "fx:id=\"ID\" was not injected: check your FXML file 'AddProduct.fxml'.";
-        assert Name != null : "fx:id=\"Name\" was not injected: check your FXML file 'AddProduct.fxml'.";
-        assert Inv != null : "fx:id=\"Inv\" was not injected: check your FXML file 'AddProduct.fxml'.";
-        assert PriceCost != null : "fx:id=\"PriceCost\" was not injected: check your FXML file 'AddProduct.fxml'.";
-        assert Max != null : "fx:id=\"Max\" was not injected: check your FXML file 'AddProduct.fxml'.";
-        assert Min != null : "fx:id=\"Min\" was not injected: check your FXML file 'AddProduct.fxml'.";
-        assert Search != null : "fx:id=\"Search\" was not injected: check your FXML file 'AddProduct.fxml'.";
-        assert searchField != null : "fx:id=\"searchField\" was not injected: check your FXML file 'AddProduct.fxml'.";
-        assert partsInvTable != null : "fx:id=\"partsInvTable\" was not injected: check your FXML file 'AddProduct.fxml'.";
-        assert Add1 != null : "fx:id=\"Add1\" was not injected: check your FXML file 'AddProduct.fxml'.";
-        assert Search1 != null : "fx:id=\"Search1\" was not injected: check your FXML file 'AddProduct.fxml'.";
-        assert searchField1 != null : "fx:id=\"searchField1\" was not injected: check your FXML file 'AddProduct.fxml'.";
-        assert associatedPartsInvTable != null : "fx:id=\"associatedPartsInvTable\" was not injected: check your FXML file 'AddProduct.fxml'.";
-        assert Add2 != null : "fx:id=\"Add2\" was not injected: check your FXML file 'AddProduct.fxml'.";
-        assert CancelButton != null : "fx:id=\"CancelButton\" was not injected: check your FXML file 'AddProduct.fxml'.";
-        assert SaveButton != null : "fx:id=\"SaveButton\" was not injected: check your FXML file 'AddProduct.fxml'.";
-        assert Delete != null : "fx:id=\"Delete\" was not injected: check your FXML file 'AddProduct.fxml'.";
         generatePartsTable();
         ID.disableProperty().setValue(true);
     }

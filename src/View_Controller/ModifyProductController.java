@@ -14,45 +14,34 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ModifyProductController {
-
-    @FXML
-    private ResourceBundle resources;
-
-    @FXML
-    private URL location;
-
     public ObservableList<Part> searchPartsInv = FXCollections.observableArrayList();
-
-    @FXML
-    private TextField Name;
-
-    @FXML
-    private TextField Inv;
-
-    @FXML
-    private TextField PriceCost;
-
-    @FXML
-    private TextField Max;
-
-    @FXML
-    private TextField Min;
-
-    @FXML
-    private Button Search;
     public ObservableList<Part> partInv = FXCollections.observableArrayList();
     public ObservableList<Part> associatedPartInv = FXCollections.observableArrayList();
+    private Product product;
+    @FXML
+    private ResourceBundle resources;
+    @FXML
+    private URL location;
+    @FXML
+    private TextField Name;
+    @FXML
+    private TextField Inv;
+    @FXML
+    private TextField PriceCost;
+    @FXML
+    private TextField Max;
+    @FXML
+    private TextField Min;
+    @FXML
+    private Button Search;
     @FXML
     private TextField ID;
     @FXML
     private TextField SearchField;
-
     @FXML
     private Button CancelButton;
-
     @FXML
     private Button SaveButton;
-
     @FXML
     private Button Delete;
     @FXML
@@ -61,38 +50,6 @@ public class ModifyProductController {
     private Button Add;
     @FXML
     private TableView<Part> associatedPartsTable;
-    private Product product;
-
-    @FXML
-    void idHandler(ActionEvent event) {
-
-    }
-
-    @FXML
-    void invHandler(ActionEvent event) {
-
-    }
-
-    @FXML
-    void maxHandler(ActionEvent event) {
-
-    }
-
-
-    @FXML
-    void minHandler(ActionEvent event) {
-
-    }
-
-    @FXML
-    void nameHandler(ActionEvent event) {
-
-    }
-
-    @FXML
-    void priceCostHandler(ActionEvent event) {
-
-    }
 
     @FXML
     void addHandler1(ActionEvent event) {
@@ -114,8 +71,9 @@ public class ModifyProductController {
 
     @FXML
     void deleteHandler(ActionEvent event) {
-        Part delPart = partsInvTable.getSelectionModel().getSelectedItem();
-        product.deleteAssociatedPart(delPart);
+        Part delPart = associatedPartsTable.getSelectionModel().getSelectedItem();
+        this.product.deleteAssociatedPart(delPart);
+        associatedPartInv.remove(delPart);
         generateAssociatedPartsTable();
     }
 
@@ -148,10 +106,23 @@ public class ModifyProductController {
 
     @FXML
     void searchHandler(ActionEvent event) {
-        searchPartsInv = Inventory.lookupPart(SearchField.getText());
-        partsInvTable.setItems(searchPartsInv);
-        partsInvTable.refresh();
-
+        if (SearchField.getText().trim().toLowerCase().isEmpty()) {
+            generatePartsTable();
+        } else {
+            try {
+                searchPartsInv.clear();
+                searchPartsInv.add(Inventory.lookupPart(Integer.parseInt(SearchField.getText().trim().toLowerCase())));
+                partsInvTable.getItems().clear();
+                partsInvTable.setItems(searchPartsInv);
+                partsInvTable.refresh();
+            } catch (NumberFormatException badInput) {
+                searchPartsInv.clear();
+                searchPartsInv.addAll(Inventory.lookupPart(SearchField.getText().trim().toLowerCase()));
+                partsInvTable.getItems().clear();
+                partsInvTable.setItems(searchPartsInv);
+                partsInvTable.refresh();
+            }
+        }
     }
 
     void setProduct(Product product) {
@@ -181,7 +152,6 @@ public class ModifyProductController {
 
     public void generateAssociatedPartsTable() {
         associatedPartInv.setAll(this.product.getAllAssociatedParts());
-
         associatedPartsTable.setItems(associatedPartInv);
         associatedPartsTable.refresh();
 
@@ -189,19 +159,6 @@ public class ModifyProductController {
 
     @FXML
     void initialize() {
-        assert ID != null : "fx:id=\"ID\" was not injected: check your FXML file 'ModifyProduct.fxml'.";
-        assert Name != null : "fx:id=\"Name\" was not injected: check your FXML file 'ModifyProduct.fxml'.";
-        assert Inv != null : "fx:id=\"Inv\" was not injected: check your FXML file 'ModifyProduct.fxml'.";
-        assert PriceCost != null : "fx:id=\"PriceCost\" was not injected: check your FXML file 'ModifyProduct.fxml'.";
-        assert Max != null : "fx:id=\"Max\" was not injected: check your FXML file 'ModifyProduct.fxml'.";
-        assert Min != null : "fx:id=\"Min\" was not injected: check your FXML file 'ModifyProduct.fxml'.";
-        assert Search != null : "fx:id=\"Search\" was not injected: check your FXML file 'ModifyProduct.fxml'.";
-        assert partsInvTable != null : "fx:id=\"partsInvTable\" was not injected: check your FXML file 'ModifyProduct.fxml'.";
-        assert Add != null : "fx:id=\"Add\" was not injected: check your FXML file 'ModifyProduct.fxml'.";
-        assert associatedPartsTable != null : "fx:id=\"associatedPartsTable\" was not injected: check your FXML file 'ModifyProduct.fxml'.";
-        assert CancelButton != null : "fx:id=\"CancelButton\" was not injected: check your FXML file 'ModifyProduct.fxml'.";
-        assert SaveButton != null : "fx:id=\"SaveButton\" was not injected: check your FXML file 'ModifyProduct.fxml'.";
-        assert Delete != null : "fx:id=\"Delete\" was not injected: check your FXML file 'ModifyProduct.fxml'.";
         ID.disableProperty().setValue(true);
 
     }

@@ -54,14 +54,6 @@ public class ModifyPartController {
     private Label machineIDLabel;
 
     @FXML
-    void companyNameHandler(ActionEvent event) {
-    }
-
-    @FXML
-    void idHandler(ActionEvent event) {
-    }
-
-    @FXML
     void cancelButtonHandler(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to exit the Modify Part window?", ButtonType.YES, ButtonType.NO);
         alert.showAndWait();
@@ -70,41 +62,6 @@ public class ModifyPartController {
             Stage stage = (Stage) CancelButton.getScene().getWindow();
             stage.close();
         }
-    }
-
-    @FXML
-    void invHandler(ActionEvent event) {
-    }
-
-    @FXML
-    void maxHandler(ActionEvent event) {
-    }
-
-    @FXML
-    void inHouseTrue(ActionEvent event) {
-
-
-    }
-
-    @FXML
-    void minHandler(ActionEvent event) {
-    }
-
-    @FXML
-    void nameHandler(ActionEvent event) {
-    }
-
-    @FXML
-    void outsourcedTrue(ActionEvent event) {
-
-    }
-
-    @FXML
-    void priceCostHandler(ActionEvent event) {
-    }
-
-    @FXML
-    void machineIDHandler(ActionEvent event) {
     }
 
     @FXML
@@ -135,7 +92,6 @@ public class ModifyPartController {
                 stage.close();
             }
 
-
         } else if (Outsourced.isSelected()) {
             Part newPart = new OutsourcedPart(
                     Integer.parseInt(partIDBox.getText()),
@@ -160,22 +116,7 @@ public class ModifyPartController {
                 stage.close();
             }
         }
-
-
     }
-
-
-
-    /*public boolean nullCheck(){ //returns TRUE if a field is missing text.
-        if (inHouseButton.isSelected()) {
-            return partIDBox.contains(null) || Name.contains(null) || Inv.contains(null) || PriceCost.contains(null) || Max.contains(null) || Min.contains(null) || MachineID.contains(null);
-
-        } else {
-            return partIDBox.contains(null) || Name.contains(null) || Inv.contains(null) || PriceCost.contains(null) || Max.contains(null) || Min.contains(null) || CompName.contains(null);
-
-
-        }
-    } */
 
     void setPart(Part part) {
         this.part = part;
@@ -200,24 +141,10 @@ public class ModifyPartController {
             Max.setText(String.valueOf(part.getMax()));
             CompName.setText(String.valueOf(((OutsourcedPart) part).getCompanyName()));
         }
-
     }
 
     @FXML
     void initialize() {
-        assert inHouseButton != null : "fx:id=\"inHouseButton\" was not injected: check your FXML file 'ModifyPart.fxml'.";
-        assert Outsourced != null : "fx:id=\"Outsourced\" was not injected: check your FXML file 'ModifyPart.fxml'.";
-        assert partIDBox != null : "fx:id=\"partIDBox\" was not injected: check your FXML file 'ModifyPart.fxml'.";
-        assert Name != null : "fx:id=\"Name\" was not injected: check your FXML file 'ModifyPart.fxml'.";
-        assert Inv != null : "fx:id=\"Inv\" was not injected: check your FXML file 'ModifyPart.fxml'.";
-        assert PriceCost != null : "fx:id=\"PriceCost\" was not injected: check your FXML file 'ModifyPart.fxml'.";
-        assert Max != null : "fx:id=\"Max\" was not injected: check your FXML file 'ModifyPart.fxml'.";
-        assert Min != null : "fx:id=\"Min\" was not injected: check your FXML file 'ModifyPart.fxml'.";
-        assert CompName != null : "fx:id=\"CompName\" was not injected: check your FXML file 'ModifyPart.fxml'.";
-        assert SaveButton != null : "fx:id=\"SaveButton\" was not injected: check your FXML file 'ModifyPart.fxml'.";
-        assert CancelButton != null : "fx:id=\"CancelButton\" was not injected: check your FXML file 'ModifyPart.fxml'.";
-        assert MachineID != null : "fx:id=\"MachineID\" was not injected: check your FXML file 'ModifyPart.fxml'.";
-
         CompName.disableProperty().bind(inHouseButton.selectedProperty());
         MachineID.visibleProperty().bind(inHouseButton.selectedProperty());
         machineIDLabel.visibleProperty().bind(inHouseButton.selectedProperty());
