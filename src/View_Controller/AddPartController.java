@@ -73,6 +73,12 @@ public class AddPartController {
     @FXML
     void saveButtonHandler(ActionEvent event) {
         if (inHouseButton.isSelected()) {
+            if (Name.getText().isEmpty() || Inv.getText().isEmpty() || PriceCost.getText().isEmpty() || Min.getText().isEmpty() || Max.getText().isEmpty() || MachineID1.getText().isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Value Missing");
+                alert.setContentText("Error: One or more fields are empty. Ensure that all fields are filled before saving.");
+                alert.show();
+            }
             Part newPart = new InhousePart(
                     getAllParts().size() + 1,
                     Name.getText(),
@@ -104,8 +110,13 @@ public class AddPartController {
                 Stage stage = (Stage) SaveButton.getScene().getWindow();
                 stage.close();
             }
-
         } else if (Outsourced.isSelected()) {
+            if (Name.getText().isEmpty() || Inv.getText().isEmpty() || PriceCost.getText().isEmpty() || Min.getText().isEmpty() || Max.getText().isEmpty() || CompName.getText().isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Value Missing");
+                alert.setContentText("Error: One or more fields are empty. Ensure that all fields are filled before saving.");
+                alert.show();
+            }
             Part newPart = new OutsourcedPart(
                     getAllParts().size() + 1,
                     Name.getText(),
@@ -139,6 +150,7 @@ public class AddPartController {
             }
         }
     }
+
 
     @FXML
     void initialize() {

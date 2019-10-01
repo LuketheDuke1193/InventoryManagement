@@ -87,41 +87,48 @@ public class ModifyProductController {
 
     @FXML
     void saveButtonHandler(ActionEvent event) {
-        this.product.setId(Integer.parseInt(ID.getText()));
-        this.product.setName(Name.getText());
-        this.product.setPrice(Double.parseDouble(PriceCost.getText()));
-        this.product.setStock(Integer.parseInt(Inv.getText()));
-        this.product.setMin(Integer.parseInt(Min.getText()));
-        this.product.setMax(Integer.parseInt(Max.getText()));
-
-        int idPosition = Integer.parseInt(ID.getText());
-        idPosition--;
-
-        if (Integer.parseInt(Min.getText()) > Integer.parseInt(Max.getText())) {
+        if (Name.getText().isEmpty() || Inv.getText().isEmpty() || PriceCost.getText().isEmpty() || Min.getText().isEmpty() || Max.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Min Field Error");
-            alert.setContentText("Error: Please ensure that the value in the Min field is equal to or lower than the value in the Max field.");
-            alert.show();
-        } else if (Integer.parseInt(Inv.getText()) > Integer.parseInt(Max.getText()) || Integer.parseInt(Inv.getText()) < Integer.parseInt(Min.getText())) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Inv Level Error");
-            alert.setContentText("Error: Please ensure that the value in the Inv field is equal to or between the values in the Max and Min fields.");
-            alert.show();
-        } else if (Double.parseDouble(PriceCost.getText()) < 0) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Price Error");
-            alert.setContentText("Error: Prices of parts and products cannot be negative.");
-            alert.show();
-        } else if (associatedPartInv.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Associated Parts Error");
-            alert.setContentText("Error: Products must have at least one associated part.");
+            alert.setTitle("Value Missing");
+            alert.setContentText("Error: One or more fields are empty. Ensure that all fields are filled before saving.");
             alert.show();
         } else {
-            Inventory.updateProduct(idPosition, this.product);
-            //closes Modify Product Window
-            Stage stage = (Stage) SaveButton.getScene().getWindow();
-            stage.close();
+            this.product.setId(Integer.parseInt(ID.getText()));
+            this.product.setName(Name.getText());
+            this.product.setPrice(Double.parseDouble(PriceCost.getText()));
+            this.product.setStock(Integer.parseInt(Inv.getText()));
+            this.product.setMin(Integer.parseInt(Min.getText()));
+            this.product.setMax(Integer.parseInt(Max.getText()));
+
+            int idPosition = Integer.parseInt(ID.getText());
+            idPosition--;
+
+            if (Integer.parseInt(Min.getText()) > Integer.parseInt(Max.getText())) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Min Field Error");
+                alert.setContentText("Error: Please ensure that the value in the Min field is equal to or lower than the value in the Max field.");
+                alert.show();
+            } else if (Integer.parseInt(Inv.getText()) > Integer.parseInt(Max.getText()) || Integer.parseInt(Inv.getText()) < Integer.parseInt(Min.getText())) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Inv Level Error");
+                alert.setContentText("Error: Please ensure that the value in the Inv field is equal to or between the values in the Max and Min fields.");
+                alert.show();
+            } else if (Double.parseDouble(PriceCost.getText()) < 0) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Price Error");
+                alert.setContentText("Error: Prices of parts and products cannot be negative.");
+                alert.show();
+            } else if (associatedPartInv.isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Associated Parts Error");
+                alert.setContentText("Error: Products must have at least one associated part.");
+                alert.show();
+            } else {
+                Inventory.updateProduct(idPosition, this.product);
+                //closes Modify Product Window
+                Stage stage = (Stage) SaveButton.getScene().getWindow();
+                stage.close();
+            }
         }
     }
 

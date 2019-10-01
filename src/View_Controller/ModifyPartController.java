@@ -67,87 +67,100 @@ public class ModifyPartController {
     @FXML
     void saveButtonHandler(ActionEvent event) throws IOException {
         if (inHouseButton.isSelected()) {
-            Part newPart = new InhousePart(
-                    Integer.parseInt(partIDBox.getText()),
-                    Name.getText(),
-                    Double.parseDouble(PriceCost.getText()),
-                    Integer.parseInt(Inv.getText()),
-                    Integer.parseInt(Min.getText()),
-                    Integer.parseInt(Max.getText()),
-                    Integer.parseInt(MachineID.getText())
-            );
-            int idPosition = Integer.parseInt(partIDBox.getText());
-            idPosition--;
-            partInv = Inventory.getAllParts();
-
-            if (Integer.parseInt(Min.getText()) > Integer.parseInt(Max.getText())) {
+            if (Name.getText().isEmpty() || Inv.getText().isEmpty() || PriceCost.getText().isEmpty() || Min.getText().isEmpty() || Max.getText().isEmpty() || MachineID.getText().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Min Field Error");
-                alert.setContentText("Error: Please ensure that the value in the Min field is equal to or lower than the value in the Max field.");
-                alert.show();
-            } else if (Integer.parseInt(Inv.getText()) > Integer.parseInt(Max.getText()) || Integer.parseInt(Inv.getText()) < Integer.parseInt(Min.getText())) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Inv Level Error");
-                alert.setContentText("Error: Please ensure that the value in the Inv field is equal to or between the values in the Max and Min fields.");
-                alert.show();
-            } else if (Double.parseDouble(PriceCost.getText()) < 0) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Price Error");
-                alert.setContentText("Error: Prices of parts and products cannot be negative.");
+                alert.setTitle("Value Missing");
+                alert.setContentText("Error: One or more fields are empty. Ensure that all fields are filled before saving.");
                 alert.show();
             } else {
-                for (int i = 0; i < Inventory.getAllProducts().size(); i++) { //Iterates through products inv
-                    for (int j = 0; j < Inventory.getAllProducts().get(i).getAllAssociatedParts().size(); j++) {//Iterates through
-                        if (Inventory.getAllProducts().get(i).getAllAssociatedParts().get(j).getId() == newPart.getId()) {
-                            Inventory.getAllProducts().get(i).getAllAssociatedParts().set(j, newPart);
+                Part newPart = new InhousePart(
+                        Integer.parseInt(partIDBox.getText()),
+                        Name.getText(),
+                        Double.parseDouble(PriceCost.getText()),
+                        Integer.parseInt(Inv.getText()),
+                        Integer.parseInt(Min.getText()),
+                        Integer.parseInt(Max.getText()),
+                        Integer.parseInt(MachineID.getText())
+                );
+                int idPosition = Integer.parseInt(partIDBox.getText());
+                idPosition--;
+                partInv = Inventory.getAllParts();
+
+                if (Integer.parseInt(Min.getText()) > Integer.parseInt(Max.getText())) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Min Field Error");
+                    alert.setContentText("Error: Please ensure that the value in the Min field is equal to or lower than the value in the Max field.");
+                    alert.show();
+                } else if (Integer.parseInt(Inv.getText()) > Integer.parseInt(Max.getText()) || Integer.parseInt(Inv.getText()) < Integer.parseInt(Min.getText())) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Inv Level Error");
+                    alert.setContentText("Error: Please ensure that the value in the Inv field is equal to or between the values in the Max and Min fields.");
+                    alert.show();
+                } else if (Double.parseDouble(PriceCost.getText()) < 0) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Price Error");
+                    alert.setContentText("Error: Prices of parts and products cannot be negative.");
+                    alert.show();
+                } else {
+                    for (int i = 0; i < Inventory.getAllProducts().size(); i++) { //Iterates through products inv
+                        for (int j = 0; j < Inventory.getAllProducts().get(i).getAllAssociatedParts().size(); j++) {//Iterates through
+                            if (Inventory.getAllProducts().get(i).getAllAssociatedParts().get(j).getId() == newPart.getId()) {
+                                Inventory.getAllProducts().get(i).getAllAssociatedParts().set(j, newPart);
+                            }
                         }
                     }
+                    updatePart(idPosition, newPart);
+                    //closes Modify Part Window
+                    Stage stage = (Stage) SaveButton.getScene().getWindow();
+                    stage.close();
                 }
-                updatePart(idPosition, newPart);
-                //closes Modify Part Window
-                Stage stage = (Stage) SaveButton.getScene().getWindow();
-                stage.close();
             }
-
         } else if (Outsourced.isSelected()) {
-            Part newPart = new OutsourcedPart(
-                    Integer.parseInt(partIDBox.getText()),
-                    Name.getText(),
-                    Double.parseDouble(PriceCost.getText()),
-                    Integer.parseInt(Inv.getText()),
-                    Integer.parseInt(Min.getText()),
-                    Integer.parseInt(Max.getText()),
-                    CompName.getText()
-            );
-            int idPosition = Integer.parseInt(partIDBox.getText());
-            idPosition--;
-            if (Integer.parseInt(Min.getText()) > Integer.parseInt(Max.getText())) {
+            if (Name.getText().isEmpty() || Inv.getText().isEmpty() || PriceCost.getText().isEmpty() || Min.getText().isEmpty() || Max.getText().isEmpty() || CompName.getText().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Min Field Error");
-                alert.setContentText("Error: Please ensure that the value in the Min field is equal to or lower than the value in the Max field.");
-                alert.show();
-            } else if (Integer.parseInt(Inv.getText()) > Integer.parseInt(Max.getText()) || Integer.parseInt(Inv.getText()) < Integer.parseInt(Min.getText())) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Inv Level Error");
-                alert.setContentText("Error: Please ensure that the value in the Inv field is equal to or between the values in the Max and Min fields.");
-                alert.show();
-            } else if (Double.parseDouble(PriceCost.getText()) < 0) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Price Error");
-                alert.setContentText("Error: Prices of parts and products cannot be negative.");
+                alert.setTitle("Value Missing");
+                alert.setContentText("Error: One or more fields are empty. Ensure that all fields are filled before saving.");
                 alert.show();
             } else {
-                for (int i = 0; i < Inventory.getAllProducts().size(); i++) { //Iterates through products inv
-                    for (int j = 0; j < Inventory.getAllProducts().get(i).getAllAssociatedParts().size(); j++) {//Iterates through
-                        if (Inventory.getAllProducts().get(i).getAllAssociatedParts().get(j).getId() == newPart.getId()) {
-                            Inventory.getAllProducts().get(i).getAllAssociatedParts().set(j, newPart);
+                Part newPart = new OutsourcedPart(
+                        Integer.parseInt(partIDBox.getText()),
+                        Name.getText(),
+                        Double.parseDouble(PriceCost.getText()),
+                        Integer.parseInt(Inv.getText()),
+                        Integer.parseInt(Min.getText()),
+                        Integer.parseInt(Max.getText()),
+                        CompName.getText()
+                );
+                int idPosition = Integer.parseInt(partIDBox.getText());
+                idPosition--;
+                if (Integer.parseInt(Min.getText()) > Integer.parseInt(Max.getText())) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Min Field Error");
+                    alert.setContentText("Error: Please ensure that the value in the Min field is equal to or lower than the value in the Max field.");
+                    alert.show();
+                } else if (Integer.parseInt(Inv.getText()) > Integer.parseInt(Max.getText()) || Integer.parseInt(Inv.getText()) < Integer.parseInt(Min.getText())) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Inv Level Error");
+                    alert.setContentText("Error: Please ensure that the value in the Inv field is equal to or between the values in the Max and Min fields.");
+                    alert.show();
+                } else if (Double.parseDouble(PriceCost.getText()) < 0) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Price Error");
+                    alert.setContentText("Error: Prices of parts and products cannot be negative.");
+                    alert.show();
+                } else {
+                    for (int i = 0; i < Inventory.getAllProducts().size(); i++) { //Iterates through products inv
+                        for (int j = 0; j < Inventory.getAllProducts().get(i).getAllAssociatedParts().size(); j++) {//Iterates through
+                            if (Inventory.getAllProducts().get(i).getAllAssociatedParts().get(j).getId() == newPart.getId()) {
+                                Inventory.getAllProducts().get(i).getAllAssociatedParts().set(j, newPart);
+                            }
                         }
                     }
+                    updatePart(idPosition, newPart);
+                    //closes Modify Part Window
+                    Stage stage = (Stage) SaveButton.getScene().getWindow();
+                    stage.close();
                 }
-                updatePart(idPosition, newPart);
-                //closes Modify Part Window
-                Stage stage = (Stage) SaveButton.getScene().getWindow();
-                stage.close();
             }
         }
     }
